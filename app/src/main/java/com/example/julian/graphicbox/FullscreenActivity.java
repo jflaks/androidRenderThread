@@ -1,6 +1,7 @@
 package com.example.julian.graphicbox;
 
 import android.annotation.SuppressLint;
+import android.media.MediaPlayer;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,12 +33,37 @@ public class FullscreenActivity extends AppCompatActivity {
     private static final int UI_ANIMATION_DELAY = 300;
 
     private AnimationView view;
+    MediaPlayer mPlayer;
+    int playerPosition = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         view = new AnimationView(this);
         setContentView(view);
+    }
+
+    @Override
+    protected void onStart() {
+        mPlayer = new MediaPlayer().create(this, R.raw.injera);
+        mPlayer.setLooping(true);
+        mPlayer.start();
+        super.onStart();
+    }
+
+    @Override
+    protected void onPause() {
+        playerPosition = mPlayer.getCurrentPosition();
+        mPlayer.pause();
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        mPlayer.seekTo(playerPosition);
+        mPlayer.start();
+        super.onResume();
     }
 
     @Override
@@ -47,6 +73,12 @@ public class FullscreenActivity extends AppCompatActivity {
         // Trigger the initial hide() shortly after the activity has been
         // created, to briefly hint to the user that UI controls
         // are available.
+    }
+
+    @Override
+    protected void onStop() {
+        mPlayer.stop();
+        super.onStop();
     }
 
 }

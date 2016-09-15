@@ -49,7 +49,7 @@ public class DrawThread extends Thread {
         Resources res = context.getResources();
 
         mBackground = BitmapFactory.decodeResource(res,
-                R.drawable.pig);
+                R.drawable.octopusfree);
     }
     public void doStart() {
         synchronized (sh) {
